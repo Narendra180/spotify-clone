@@ -2,11 +2,12 @@
 
 
 import { useRouter } from "next/navigation";
-import React, { MouseEventHandler, SyntheticEvent, useCallback } from "react";
+import React, { SyntheticEvent, useCallback } from "react";
 import { twMerge } from "tailwind-merge";
 import { RxCaretLeft, RxCaretRight } from "react-icons/rx";
 import { HiHome } from "react-icons/hi";
 import { BiSearch } from "react-icons/bi";
+import Button from "./Button";
 
 type HeaderProps = {
   children: React.ReactNode,
@@ -21,11 +22,28 @@ const Header = ({ children, className }: HeaderProps) => {
 
   }
 
-  const handleCaretBtnClick = useCallback((e: SyntheticEvent) => {
-    const target = e.target as HTMLButtonElement;
-    if(target.name === 'left-caret') router.back();
-    if(target.name === 'right-caret') router.forward();
+  const handleBtnClick = useCallback((e: SyntheticEvent) => {
+    const { name } = e.target as HTMLButtonElement;
+    switch(name) {
+      case "left-caret": {
+        router.back();
+        return;
+      }
+      case "right-caret": {
+        router.forward();
+        return;
+      }
+      case "signup-button": {
+
+        return;
+      }
+      case "login-button": {
+        
+        return;
+      }
+    }
   },[]);
+
 
   return (
     <div
@@ -65,7 +83,8 @@ const Header = ({ children, className }: HeaderProps) => {
               hover:opacity-75
               transition
             "
-            onClick={handleCaretBtnClick}
+            onClick={handleBtnClick}
+            name="left-caret"
           >
             <RxCaretLeft className="text-white" size={35} />
           </button>
@@ -79,7 +98,8 @@ const Header = ({ children, className }: HeaderProps) => {
               hover:opacity-75
               transition
             "
-            onClick={handleCaretBtnClick}
+            onClick={handleBtnClick}
+            name="right-caret"
           >
             <RxCaretRight className="text-white" size={35} />
           </button>
@@ -122,7 +142,46 @@ const Header = ({ children, className }: HeaderProps) => {
             <BiSearch className="text-black" size={20} />
           </button>
         </div>
+        <div
+          className="
+            flex
+            justify-between
+            items-center
+            gap-x-4
+          "
+        >
+          <>
+            <div>
+              <Button
+                className="
+                  bg-transparent
+                  text-neutral-300
+                  font-medium
+                "
+                name="signup-button"
+                onClick={handleBtnClick}
+              >
+                Signup
+              </Button>
+            </div>
+
+            <div>
+              <Button
+                className="
+                  bg-white
+                  px-6
+                  py-2
+                "
+                name="login-button"
+                onClick={handleBtnClick}
+              >
+                Log in
+              </Button>
+            </div>          
+          </>
+        </div>
       </div>
+      {children}
     </div>
   )
 }
